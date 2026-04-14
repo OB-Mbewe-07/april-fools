@@ -1,0 +1,36 @@
+<div class="flex flex-wrap justify-center ml-[10%] mr-[10%] mt-5 cursor-help">
+    @for (drink of (drinks$ | async); track drink.id) {
+        <div class="m-3 transition-all duration-500 hover:skew-x-6 hover:-translate-y-10">
+            
+            <hlm-card class="relative mx-auto w-full max-w-sm pt-0 overflow-hidden">
+                <div class="bg-primary absolute inset-0 z-30 aspect-video opacity-30 mix-blend-color pointer-events-none animate-reverse-spin"></div>
+                
+                <img
+                    [src]="drink.image"
+                    [alt]="drink.name"
+                    class="relative z-20 aspect-video w-full object-cover brightness-60 grayscale hover:scale-150 hover:rotate-180 transition-all duration-1000"
+                />
+
+                <hlm-card-header>
+                    <div hlmCardAction>
+                        <span hlmBadge variant="destructive" class="animate-bounce">
+                            {{ drink.isAlcoholic ? '0% Ethanol (Lie)' : 'Spicy Water' }}
+                        </span>
+                    </div>
+                    <h3 hlmCardTitle class="hover:text-[5px] transition-all">{{ drink.name }}</h3>
+                    <p hlmCardDescription class="italic">
+                        Actually a soup
+                    </p>
+                </hlm-card-header>
+
+                <hlm-card-footer>
+                    <button 
+                        hlmBtn 
+                        class="w-full bg-black text-white active:scale-[5] hover:translate-x-full hover:opacity-0 transition-all duration-200">
+                        View Recipe
+                    </button>
+                </hlm-card-footer>
+            </hlm-card>
+        </div>
+    }
+</div>
