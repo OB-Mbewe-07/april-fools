@@ -4,7 +4,7 @@ import { BevarageCardComponent } from "./cards.component/cards.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, BevarageCardComponent],
+  imports: [RouterOutlet],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })

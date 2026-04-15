@@ -1,25 +1,25 @@
 @defer (on viewport; prefetch on idle) {
-    <div class="mr-[14%] ml-[14%] flex flex-col items-center justify-center">
-        @defer (on timer(2000ms)) {
-            @if (jokeData$ | async; as joke) {
-                @let punchlineIsLie = joke.punchline.length > 20;
+  <div class="mr-[14%] ml-[14%] flex flex-col items-center justify-center">
+    @defer (on timer(2000ms)) {
+      @if (jokeData$ | async; as joke) {
+        @let punchlineIsLie = joke.punchline.length > 20;
 
-                <div hlmAlert class="m-3">
-                    <ng-icon hlmAlertIcon name="lucideCircleCheck" />
-                    <h4 hlmAlertTitle>{{ joke.setup }}</h4>
-                    <p hlmAlertDescription>
-                        {{ punchlineIsLie ? joke.punchline : 'We lost the punchline. Sorry.' }}
-                    </p>
-                </div>
-            }
-        } @placeholder {
-            <div hlmAlert class="m-3 opacity-50">
-                <ng-icon hlmAlertIcon name="lucideInfo" />
-                <h4 hlmAlertTitle>Loading a terrible joke...</h4>
-                <p hlmAlertDescription>Please lower your expectations now.</p>
-            </div>
-        }
-    </div>
+        <div hlmAlert class="m-3">
+          <ng-icon hlmAlertIcon name="lucideCircleCheck" />
+          <h4 hlmAlertTitle>{{ joke.setup }}</h4>
+          <p hlmAlertDescription>
+            {{ punchlineIsLie ? joke.punchline : 'We lost the punchline. Sorry.' }}
+          </p>
+        </div>
+      }
+    } @placeholder {
+      <div hlmAlert class="m-3 opacity-50">
+        <ng-icon hlmAlertIcon name="lucideInfo" />
+        <h4 hlmAlertTitle>Loading a terrible joke...</h4>
+        <p hlmAlertDescription>Please lower your expectations now.</p>
+      </div>
+    }
+  </div>
   <div class="flex flex-wrap justify-center ml-[10%] mr-[10%] mt-5 cursor-help">
     @for (drink of drinks$ | async; track drink.id) {
       @let fakeName = drink.name + ' Worse';
@@ -38,7 +38,7 @@
 
           <hlm-card-header>
             <div hlmCardAction>
-              <span hlmBadge variant="destructive" >
+              <span hlmBadge variant="destructive">
                 {{ lieLabel }}
               </span>
             </div>
@@ -50,11 +50,11 @@
 
           <hlm-card-footer>
             <button
-                hlmBtn
-                class="w-full bg-black text-white transition-all duration-200
-                    hover:translate-x-full hover:opacity-0 active:scale-[5]"
-                (click)="onDrinkClick(drink)">
-                View Drink
+              hlmBtn
+              class="w-full bg-black text-white transition-all duration-200 hover:translate-x-full hover:opacity-0 active:scale-[5]"
+              (click)="onDrinkClick(drink)"
+            >
+              View Drink
             </button>
           </hlm-card-footer>
         </hlm-card>
@@ -62,17 +62,17 @@
     }
   </div>
 } @loading (minimum 1500ms) {
-    <div class="flex flex-col items-center justify-center mt-20 gap-4">
-        <p class="text-muted-foreground animate-pulse">Preparing your soups...</p>
-        <p class="text-xs text-muted-foreground">(This is taking longer than necessary on purpose)</p>
-    </div>
+  <div class="flex flex-col items-center justify-center mt-20 gap-4">
+    <p class="text-muted-foreground animate-pulse">Preparing your soups...</p>
+    <p class="text-xs text-muted-foreground">(This is taking longer than necessary on purpose)</p>
+  </div>
 } @placeholder {
-    <div class="flex flex-col items-center justify-center mt-20 gap-2">
-        <p class="text-muted-foreground">Scroll down to summon the soups.</p>
-    </div>
+  <div class="flex flex-col items-center justify-center mt-20 gap-2">
+    <p class="text-muted-foreground">Scroll down to summon the soups.</p>
+  </div>
 } @error {
-    <div class="flex flex-col items-center justify-center mt-20 gap-2">
-        <p class="text-destructive font-bold text-xl">The soups escaped.</p>
-        <p class="text-muted-foreground text-sm">No one is coming to fix this.</p>
-    </div>
+  <div class="flex flex-col items-center justify-center mt-20 gap-2">
+    <p class="text-destructive font-bold text-xl">The soups escaped.</p>
+    <p class="text-muted-foreground text-sm">No one is coming to fix this.</p>
+  </div>
 }
