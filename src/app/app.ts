@@ -1,9 +1,10 @@
 import { Component, signal } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { BevarageCardComponent } from "./cards.component/cards.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, BevarageCardComponent],
   templateUrl: './app.html',
   styleUrl: './app.css'
 })
