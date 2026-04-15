@@ -1,5 +1,5 @@
 import { 
-    ChangeDetectionStrategy, Component, inject, Input, OnInit, signal 
+    ChangeDetectionStrategy, Component, inject, Input, signal 
 } from '@angular/core';
 import { Router } from '@angular/router';
 import { HlmButtonImports } from '@spartan-ng/helm/button';
@@ -12,7 +12,7 @@ import { HlmCardImports } from '@spartan-ng/helm/card';
     changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './motivation.component.html',
 })
-export class MotivationComponent implements OnInit {
+export class MotivationComponent  {
     @Input() drinkId!: string;
 
     private router = inject(Router);
@@ -23,13 +23,6 @@ export class MotivationComponent implements OnInit {
     wordCount = signal(0);
     
     readonly minWords = 20;
-
-    ngOnInit() {
-        const nav = this.router.getCurrentNavigation();
-        console.log(nav); 
-        const name = nav?.extras?.state?.['drinkName'];
-        if (name) this.drinkName.set(name);
-    }
 
     onMotivationChange(event: Event) {
         const value = (event.target as HTMLTextAreaElement).value;
