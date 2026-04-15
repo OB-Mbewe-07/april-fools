@@ -1,36 +1,78 @@
-<div class="flex flex-wrap justify-center ml-[10%] mr-[10%] mt-5 cursor-help">
-    @for (drink of (drinks$ | async); track drink.id) {
-        <div class="m-3 transition-all duration-500 hover:skew-x-6 hover:-translate-y-10">
-            
-            <hlm-card class="relative mx-auto w-full max-w-sm pt-0 overflow-hidden">
-                <div class="bg-primary absolute inset-0 z-30 aspect-video opacity-30 mix-blend-color pointer-events-none animate-reverse-spin"></div>
-                
-                <img
-                    [src]="drink.image"
-                    [alt]="drink.name"
-                    class="relative z-20 aspect-video w-full object-cover brightness-60 grayscale hover:scale-150 hover:rotate-180 transition-all duration-1000"
-                />
+@defer (on viewport; prefetch on idle) {
+    <div class="mr-[14%] ml-[14%] flex flex-col items-center justify-center">
+        @defer (on timer(2000ms)) {
+            @if (jokeData$ | async; as joke) {
+                @let punchlineIsLie = joke.punchline.length > 20;
 
-                <hlm-card-header>
-                    <div hlmCardAction>
-                        <span hlmBadge variant="destructive" class="animate-bounce">
-                            {{ drink.isAlcoholic ? '0% Ethanol (Lie)' : 'Spicy Water' }}
-                        </span>
-                    </div>
-                    <h3 hlmCardTitle class="hover:text-[5px] transition-all">{{ drink.name }}</h3>
-                    <p hlmCardDescription class="italic">
-                        Actually a soup
+                <div hlmAlert class="m-3">
+                    <ng-icon hlmAlertIcon name="lucideCircleCheck" />
+                    <h4 hlmAlertTitle>{{ joke.setup }}</h4>
+                    <p hlmAlertDescription>
+                        {{ punchlineIsLie ? joke.punchline : 'We lost the punchline. Sorry.' }}
                     </p>
-                </hlm-card-header>
+                </div>
+            }
+        } @placeholder {
+            <div hlmAlert class="m-3 opacity-50">
+                <ng-icon hlmAlertIcon name="lucideInfo" />
+                <h4 hlmAlertTitle>Loading a terrible joke...</h4>
+                <p hlmAlertDescription>Please lower your expectations now.</p>
+            </div>
+        }
+    </div>
+  <div class="flex flex-wrap justify-center ml-[10%] mr-[10%] mt-5 cursor-help">
+    @for (drink of drinks$ | async; track drink.id) {
+      @let fakeName = drink.name + ' Worse';
+      @let lieLabel = drink.isAlcoholic ? '0% Ethanol ' : 'Spicy Water';
 
-                <hlm-card-footer>
-                    <button 
-                        hlmBtn 
-                        class="w-full bg-black text-white active:scale-[5] hover:translate-x-full hover:opacity-0 transition-all duration-200">
-                        View Recipe
-                    </button>
-                </hlm-card-footer>
-            </hlm-card>
-        </div>
+      <div class="m-3 transition-all duration-500 hover:skew-x-6 hover:-translate-y-10">
+        <hlm-card class="relative mx-auto w-full max-w-sm pt-0 overflow-hidden">
+          <div
+            class="bg-primary absolute inset-0 z-30 aspect-video opacity-30 mix-blend-color pointer-events-none animate-reverse-spin"
+          ></div>
+          <img
+            [src]="drink.image"
+            [alt]="drink.name"
+            class="relative z-20 aspect-video w-full object-cover brightness-60 grayscale hover:scale-150 hover:rotate-180 transition-all duration-1000"
+          />
+
+          <hlm-card-header>
+            <div hlmCardAction>
+              <span hlmBadge variant="destructive" >
+                {{ lieLabel }}
+              </span>
+            </div>
+            <h3 hlmCardTitle class="hover:text-[5px] transition-all">
+              {{ fakeName }}
+            </h3>
+            <p hlmCardDescription class="italic">Actually a soup</p>
+          </hlm-card-header>
+
+          <hlm-card-footer>
+            <button
+                hlmBtn
+                class="w-full bg-black text-white transition-all duration-200
+                    hover:translate-x-full hover:opacity-0 active:scale-[5]"
+                (click)="onDrinkClick(drink)">
+                View Drink
+            </button>
+          </hlm-card-footer>
+        </hlm-card>
+      </div>
     }
-</div>
+  </div>
+} @loading (minimum 1500ms) {
+    <div class="flex flex-col items-center justify-center mt-20 gap-4">
+        <p class="text-muted-foreground animate-pulse">Preparing your soups...</p>
+        <p class="text-xs text-muted-foreground">(This is taking longer than necessary on purpose)</p>
+    </div>
+} @placeholder {
+    <div class="flex flex-col items-center justify-center mt-20 gap-2">
+        <p class="text-muted-foreground">Scroll down to summon the soups.</p>
+    </div>
+} @error {
+    <div class="flex flex-col items-center justify-center mt-20 gap-2">
+        <p class="text-destructive font-bold text-xl">The soups escaped.</p>
+        <p class="text-muted-foreground text-sm">No one is coming to fix this.</p>
+    </div>
+}

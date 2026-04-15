@@ -1,0 +1,78 @@
+<div class="min-h-screen flex flex-col items-center justify-center px-6">
+    @if (!submitted()) {
+
+        <div class="w-full max-w-lg flex flex-col gap-6">
+
+            @let title = 'Why do you deserve ' + drinkName() + '?';
+            @let remaining = minWords - wordCount();
+            @let wordLabel = remaining === 1 ? 'word' : 'words';
+            @let encouragement = wordCount() === 0
+                ? 'The drink is watching. Start typing.'
+                : wordCount() < 10
+                ? 'Pathetic. Keep going.'
+                : wordCount() < minWords
+                ? remaining + ' more ' + wordLabel + '. Almost embarrassing enough.'
+                : 'Fine. That\'s barely acceptable.';
+
+            <h1 class="text-2xl font-bold text-center">{{ title }}</h1>
+
+            <textarea
+                class="w-full min-h-[200px] rounded-lg border border-input bg-background 
+                       px-4 py-3 text-sm resize-none focus:outline-none focus:ring-2 
+                       focus:ring-ring transition-all"
+                placeholder="Dear Beverage..."
+                [value]="motivation()"
+                (input)="onMotivationChange($event)">
+            </textarea>
+
+            <div class="flex items-center justify-between text-xs">
+                <span 
+                    class="transition-all duration-300"
+                    [class.text-destructive]="wordCount() < minWords"
+                    [class.text-green-500]="wordCount() >= minWords">
+                    {{ wordCount() }} / {{ minWords }} words
+                </span>
+                <span class="text-muted-foreground italic">
+                    {{ encouragement }}
+                </span>
+            </div>
+
+            
+            <div class="flex gap-3">
+                <button
+                    hlmBtn
+                    variant="outline"
+                    class="flex-1"
+                    (click)="goBack()">
+                    Give Up
+                </button>
+
+                <button
+                    hlmBtn
+                    class="flex-1 transition-all duration-300"
+                    [disabled]="!canSubmit"
+                    [class.opacity-30]="!canSubmit"
+                    [class.cursor-not-allowed]="!canSubmit"
+                    (click)="onSubmit()">
+                    {{ canSubmit ? 'Submit' : 'Not Yet' }}
+                </button>
+            </div>
+
+        </div>
+
+    } @else {
+        <div class="flex flex-col items-center gap-6 text-center max-w-md">
+            <h2 class="text-2xl font-bold">Request Received.</h2>
+            <p class="text-muted-foreground italic">
+                Review received and rejected
+            </p>
+            <p class="text-xs text-muted-foreground">
+                You will not receive it
+            </p>
+            <button hlmBtn variant="outline" (click)="goBack()">
+                back to menu
+            </button>
+        </div>
+    }
+
+</div>
